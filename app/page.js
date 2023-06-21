@@ -37,7 +37,10 @@ export default function Home() {
         <div>
           {state.categories.map((category) => {
             return (
-              <button onClick={() => chooseCategory(category.title)}>
+              <button
+                key={category.title}
+                onClick={() => chooseCategory(category.title)}
+              >
                 {category.title}
               </button>
             );
