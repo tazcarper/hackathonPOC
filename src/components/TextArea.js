@@ -25,6 +25,13 @@ function TextAreaComponent(props) {
   );
 
   useEffect(() => {
+    // This function will be called when the component unmounts
+    return () => {
+      updateValue.cancel();
+    };
+  }, [updateValue]);
+
+  useEffect(() => {
     updateValue.cancel();
     updateValue(tempValue);
     return () => updateValue.cancel();
