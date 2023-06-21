@@ -3,7 +3,7 @@ import {
   GlobalStateContext,
   GlobalDispatchContext,
 } from "../src/store/globalStore";
-import CategoriesModule from "@/src/store/questionModule";
+import CategoriesModule from "@/src/module/questionModule";
 import styles from "./page.module.css";
 import { useContext } from "react";
 
