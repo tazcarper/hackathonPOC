@@ -4,6 +4,7 @@ import {
   GlobalStateContext,
   GlobalDispatchContext,
 } from "../store/globalStore";
+import TextAreaComponent from "../components/TextArea";
 
 const CategoriesModule = () => {
   const state = useContext(GlobalStateContext);
@@ -75,7 +76,7 @@ const CategoriesModule = () => {
         <div key={question.title}>
           <h3>{question.title}</h3>
           <form onSubmit={(event) => handleSubmit(event, question.title)}>
-            <textarea name="answer" required />
+            <TextAreaComponent name="answer" question={question} />
             <button type="submit">Submit Answer</button>
           </form>
           <p
