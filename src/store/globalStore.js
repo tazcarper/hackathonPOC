@@ -68,6 +68,7 @@ const initialState = {
 
 // Defining our reducer
 const reducer = (state, action) => {
+  eee;
   switch (action.type) {
     case "SET_STEP":
       return { ...state, step: action.payload };
