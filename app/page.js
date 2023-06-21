@@ -1,95 +1,71 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import {
+  GlobalStateContext,
+  GlobalDispatchContext,
+} from "../src/store/globalStore";
+import CategoriesModule from "@/src/store/questionModule";
+import styles from "./page.module.css";
+import { useContext } from "react";
 
 export default function Home() {
+  const state = useContext(GlobalStateContext);
+  const dispatch = useContext(GlobalDispatchContext);
+
+  const { step, currentCategory } = state;
+
+  const chooseCategory = (category) => {
+    dispatch({ type: "SET_CURRENT_CATEGORY", payload: category });
+    dispatch({ type: "SET_STEP", payload: "questionsView" });
+  };
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
+      <div className={styles.description}>Hack test</div>
+      {step === "intro" && (
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <p>This is the intro sections</p>
+          <button
+            onClick={() =>
+              dispatch({ type: "SET_STEP", payload: "choose_category" })
+            }
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Next
+          </button>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
+      {step === "choose_category" && (
+        <div>
+          {state.categories.map((category) => {
+            return (
+              <button onClick={() => chooseCategory(category.title)}>
+                {category.title}
+              </button>
+            );
+          })}
+        </div>
+      )}
+      {step === "questionsView" && (
+        <div>
+          <CategoriesModule />
+        </div>
+      )}
+      {step === "feedback" && (
+        <div>
+          <h1>All questions done</h1>
+          <button
+            onClick={() => {
+              dispatch({
+                type: "RESET_CATEGORY_QUESTIONS",
+                payload: currentCategory,
+              });
+              dispatch({ type: "SET_STEP", payload: "choose_category" });
+            }}
+          >
+            Back to categories
+          </button>
+        </div>
+      )}
+      <div className={styles.center}></div>
     </main>
-  )
+  );
 }
